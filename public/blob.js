@@ -13,7 +13,7 @@ function Blob(x, y, r) {
   this.r = r;
   this.vel = createVector(0, 0);
   this.color = [getRandomInt(255), getRandomInt(255), getRandomInt(255)]
-
+  this.mass = 0
   // this.color = getRandomInt(255);
 
   this.update = function() {
@@ -21,7 +21,7 @@ function Blob(x, y, r) {
     newvel.div(50);
     //newvel.setMag(3);
     newvel.limit(3);
-    this.vel.lerp(newvel, 0.2);
+    this.vel.lerp(newvel, 0.1);
     this.pos.add(this.vel);
   };
 
@@ -29,9 +29,22 @@ function Blob(x, y, r) {
     var distance = p5.Vector.dist(this.pos,other.pos);
     if ( distance < this.r + other.r ){
         
-        var sum = PI * this.r * this.r + PI * other.r * other.r  // сумма площадей нашей капли и той что сьели
+        var sum = PI * this.r * this.r + (PI * other.r * other.r)*0.2  // сумма площадей нашей капли и той что сьели
         this.r = sqrt(sum/PI) // area = pi * r^2 => r = sqrt(area/pi)
-        
+        this.mass += 1
+        return true
+    } else {
+        return false
+    }
+  }
+
+  this.eats_enemy = function(other){
+
+    if ( Math.round((blob.pos.x-other.x)**2) + Math.round((blob.pos.y-other.y)**2) < blob.r**2 ) {
+      console.log(123)  
+      var sum = PI * this.r * this.r + (PI * other.r * other.r)*0.2  // сумма площадей нашей капли и той что сьели
+        this.r = sqrt(sum/PI) // area = pi * r^2 => r = sqrt(area/pi)
+        this.mass += other.mass
         return true
     } else {
         return false

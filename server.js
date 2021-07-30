@@ -6,16 +6,17 @@
 // Based off of Shawn Van Every's Live Web
 // http://itp.nyu.edu/~sve204/liveweb_fall2013/week3.html
 
-var blobs = [];
+var Players = [];
 
 
 
-function Blob(id,name, x, y, r, color) {
+function Blob(id,name, x, y, r, mass,color) {
   this.id = id;
   this.name = name;
   this.x = x;
   this.y = y;
   this.r = r;
+  this.mass = mass;
   this.color = color      ;
 }
 
@@ -45,7 +46,7 @@ var io = require('socket.io')(server);
 setInterval(heartbeat, 33);
 
 function heartbeat() {
-  io.sockets.emit('heartbeat', blobs);
+  io.sockets.emit('heartbeat', Players);
 }
 
 // Register a callback function to run when we have an individual connection
@@ -58,33 +59,45 @@ io.sockets.on(
 
     socket.on('start', function(data) {
       // console.log(data.name + ' ' + data.x + ' ' + data.y + ' ' + data.r);
-      var blob = new Blob(socket.id, data.name, data.x, data.y, data.r, data.color);
-      
-      blobs.push(blob);
+      var blob = new Blob(socket.id, data.name, data.x, data.y, data.r, data.mass, data.color);
+      console.log(data.mass)
+      Players.push(blob);
+      // console.log(data)
     });
 
     socket.on('update', function(data) {
       // console.log(socket.id + " " + data.x + " " + data.y + " " + data.r);
       var blob;
-      for (var i = 0; i < blobs.length; i++) {
-        if (socket.id == blobs[i].id) {
-          blob = blobs[i];
+      for (var i = 0; i < Players.length; i++) {
+        if (socket.id == Players[i].id) {
+          // console.log(Players[i])
+          blob = Players[i];
+
         }
       }
       blob.x = data.x;
       blob.y = data.y;
       blob.r = data.r;
+      blob.mass = data.mass;
       
     });
 
+    socket.on("killed", function(data) {
+      Players[data.index].r = data.r;
+      Players[data.inedx].x = 10000;
+      Players[data.inedx].y = 10000;
+      console.log(Players)
+    })
+
+
     socket.on('disconnect', function() {
-      for (var i = 0; i < blobs.length; i++) {
-        if (socket.id == blobs[i].id) {
-          blobs.splice(i, 1);
+      for (var i = 0; i < Players.length; i++) {
+        if (socket.id == Players[i].id) {
+          Players.splice(i, 1);
         }
       }
       console.log('Client has disconnected');
-      console.log(blobs);
+      console.log(Players);
     });
   }
 );
