@@ -84,9 +84,7 @@ io.sockets.on(
 
     socket.on("killed", function(data) {
       Players[data.index].r = data.r;
-      Players[data.inedx].x = 10000;
-      Players[data.inedx].y = 10000;
-      console.log(Players)
+      Players[data.index].mass = data.mass;
     })
 
 

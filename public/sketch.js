@@ -101,17 +101,18 @@ function draw() {
       if ( blob.eats_enemy(Players[i]) ){
         console.log(blob.r, Players[i].r, blob.r >= Players[i].r)
         if (blob.r >= Players[i].r) {
-          console.log(Players[i].name)
-          Players[i].r = -1;
+          blob.mass += Players[i].mass;
+          Players[i].r = 11;
           data = {
-            r: -1,
+            mass:0,
+            r: 11,
             index : i
           }
           socket.emit("killed",data);
         } else {
-          console.log(Players[NumPlayer].name)
-          // Players.splice(NumPlayer,1);
-          blob.r = -1;
+          blob.mass = 0;
+          blob.r = 11;
+
           
         }
       }
@@ -119,7 +120,7 @@ function draw() {
   }
 
   blob.update();
-  // blob.constrain();
+  blob.constrain();
 
   var data = {
     x: blob.pos.x,
