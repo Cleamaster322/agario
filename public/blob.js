@@ -1,18 +1,15 @@
-// Daniel Shiffman
-// http://codingtra.in
-// http://patreon.com/codingtrain
-// Code for: https://youtu.be/ZjVyKXp9hec
+
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
 
 
-function Blob(x, y, r) {
+function Blob(x, y, r,color) {
   this.pos = createVector(x, y);
   this.r = r;
   this.vel = createVector(0, 0);
-  this.color = [getRandomInt(255), getRandomInt(255), getRandomInt(255)]
+  this.color = [color[0],color[1],color[2]]
   this.mass = 0
 
   this.update = function() {
