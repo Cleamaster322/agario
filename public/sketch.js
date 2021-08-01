@@ -9,6 +9,7 @@ var Players = [];
 var blobs = []
 let blobsInfoToCreate = []
 var test = [33]
+var Image = loadImage("canvas.jpg");
 
 var zoom = 1;
 var StandartRadiusBlob = 15;
@@ -52,6 +53,7 @@ function setup() {
 
 
 function draw() {
+  image(Image, 1300, 800);
   for (let i = 0; i<2000;i++){
     if (blobsInfoToCreate[i] == undefined) continue 
     blobs[i] = new Blob(blobsInfoToCreate[i][0],blobsInfoToCreate[i][1],15,blobsInfoToCreate[i][2])
