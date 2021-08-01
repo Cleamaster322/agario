@@ -9,7 +9,8 @@ var Players = [];
 var blobs = []
 let blobsInfoToCreate = []
 var test = [33]
-var Image = loadImage("canvas.jpg");
+
+let img;  
 
 var zoom = 1;
 var StandartRadiusBlob = 15;
@@ -25,11 +26,13 @@ function drawshow(Players) {
   text(Players.name, Players.x, Players.y+10);
 };
 
-
+function preload() {
+  img = loadImage('/canvas.jpg');
+}
 
 function setup() {
   createCanvas(1300, 800);
-
+  image(img, 0, 0);
   socket = io();
 
   blob = new Blob(random(width), random(height), StandartRadiusBlob,[random(255),random(255),random(255)]);
@@ -53,12 +56,11 @@ function setup() {
 
 
 function draw() {
-  image(Image, 1300, 800);
+  image(img, 0, 0);
   for (let i = 0; i<2000;i++){
     if (blobsInfoToCreate[i] == undefined) continue 
     blobs[i] = new Blob(blobsInfoToCreate[i][0],blobsInfoToCreate[i][1],15,blobsInfoToCreate[i][2])
   }
-  background(160,160,160);
   // console.log(blob.pos.x, blob.pos.y);
   translate(width / 2, height / 2);
   var newzoom = StandartRadiusBlob / blob.r;
